@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Monthly Production Prediction for Teams</title>
+    <img src="thd_logo_quadratisch.png" alt="Logo" style="position:absolute; top:0px; left:0px; width:500px; height:500px;"></title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+ .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5%;
+}
+
+.item {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 80%; /* Adjust the width as needed */
+    text-align: center;
+}
+            form {
+        width: 300px;
+        margin: 0 auto;
+    }
+        form div {
+            margin-bottom: 15px;
+        }
+        form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+        form select, form input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        form .button {
+            text-align: center;
+        }
+
+        form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+        label {
+            display: inline-block;
+            width: 90px;
+            text-align: right;
+        }
+
+        input,
+        select {
+            font: 1em sans-serif;
+            width: 130px;
+            box-sizing: border-box;
+            border: 1px solid #999;
+        }
+
+        .button {
+            padding-left: 0px;
+        }
+
+        button {
+            margin-left: .5em;
+        }
+        .centered-h1 {
+
+            padding-left: 675px;
+     }
+     .see-graphs-button {
+    background-color: #3498db; /* Change this to your desired color */
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.blue-text {
+    color: blue;
+    font-weight: bold;
+
+}
+
+.red-text {
+    color: red;
+    font-weight: bold;
+
+}
+
+
+.see-graphs-button:hover {
+    background-color: #2980b9; /* Change this to your desired hover color */
+}
+        #particles-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://threejs.org/build/three.min.js"></script>
+</head>
+
+<body>
+    <div id="particles-js"></div>
+  <h1 class="centered-h1">Production Prediction</h1>
+
+<form action="/" method="post">
+    <div>
+        <label for="department">Department:</label>
+        <select id="department" name="department" placeholder="Select the department for which you want to predict.">
+            <option value="Sweatshirt">Sweatshirt</option>
+            <option value="T-Shirt">T-Shirt</option>
+            <option value="Gloves">Gloves</option>
+         </select>
+    </div>
+    <div>
+<label for="quarter" title="In one year, There are 4 Quarters like Seasons.">Quarter:</label>
+        <select id="quarter" name="quarter" placeholder="Select the quarter for which you want to predict.">
+            <option value="Quarter1">Q1</option>
+            <option value="Quarter2">Q2</option>
+            <option value="Quarter3">Q3</option>
+            <option value="Quarter4">Q4</option>
+        </select>
+    </div>
+    <div>
+        <label for="no_of_workers" title="Number of Workers in the Team.">Number of Workers:</label>
+        <input type="number" id="no_of_workers" name="no_of_workers" min="25" max="100" placeholder="Number of workers.">
+    </div>
+    <div>
+        <label for="defects_day" title="Empty days passed in a month.(Holidays,Strike etc.)"> Empty Day per Month:</label>
+        <input type="number" id="defects_day" name="defects_day" min="0" max="10" placeholder="Number of empty days in a month.">
+    </div>
+    <div class="button">
+        <button type="submit" onclick="changeColorAndPredict()" title="Click to predict.">Predict</button>
+    </div>
+</form>
+
+
+
+  <div class="center">
+    <div class="item">
+    <h2 class="blue-text">Prediction</h2>
+    <p>With the given inputs, it is predicted that <span class="red-text">{{ prediction }}</span> <span class="blue-text">{{ department }}</span> units can be produced.</p>
+</div>
+
+
+
+
+
+    </div>
+ <script id="particles-js-script">
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#3498db'
+                },
+                shape: {
+                    type: 'circle',
+                    stroke: {
+                        width: 1,
+                        color: '#000000'
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 20,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#3498db',
+                    opacity: 0.4,
+                    width: 2
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'grab'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200,
+                        duration: 0.4
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true
+        });
+
+
+    function changeColorAndPredict() {
+
+
+
+        changeColorAndPredict(); // Assuming showConfetti is defined elsewhere
+    }
+
+    function openResultPage() {
+        // Open Result.html in a new tab or window
+    window.open('{{ url_for('result', show_results='true') }}', '_blank');
+    }
+
+
+    </script>
+</body>
+<div class="center">
+    <div class="item">
+        <h1>Results</h1>
+        <p>Prediction: {{ prediction }}</p>
+        <p>R-squared (Train): {{ r2_train }}</p>
+        <p>Normalized MSE (Train): {{ mse_train }}</p>
+
+        <h2>Graphs</h2>
+        <img src="{{ url_for('static', filename='qq_plot.png') }}" alt="Q–Q Plot">
+        <img src="{{ url_for('static', filename='r_squared_plot.png') }}" alt="R-squared Plot">
+        <img src="{{ url_for('static', filename='scatter_plot.png') }}" alt="Scatter Plot">
+        <img src="{{ url_for('static', filename='histogram.png') }}" alt="Histogram">
+    </div>
+</div>
+
+</div>
+</html>
